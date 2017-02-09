@@ -51,6 +51,7 @@ def on_chat_message(msg):
         msg += "/teamhistory - melihat histori tim yg digunakan player\n"
         bot.sendMessage(chat_id, msg)
     else:
+        #if ''
         bot.sendMessage(chat_id, "On progress!")
 
 def on_callback_query(msg):
