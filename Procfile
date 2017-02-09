@@ -1,1 +1,2 @@
-web: gunicorn gettingstarted.wsgi --log-file -
+db: python database.py
+web: python bot.py
