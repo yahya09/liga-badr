@@ -1,3 +1,6 @@
-import os
+import coba
 
-print(type(os.environ['BADR_ADMIN_ID']))
+print(coba.addGlobal(5))
+print(coba.powerGlobal(2))
+print(coba.addGlobal(12345))
+print(coba.powerGlobal(-1))
