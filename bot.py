@@ -5,7 +5,7 @@ import telepot
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 import json
 import herokudb
-import replyhandler
+#import replyhandler
 
 BOT_KEY = os.environ['BADR_BOT_KEY']
 CHALLONGE_KEY = os.environ['BADR_CHALLONGE_KEY']
