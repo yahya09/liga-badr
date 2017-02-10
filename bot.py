@@ -45,7 +45,7 @@ def on_chat_message(msg):
         reply += '=======================\n'
         reply += 'Klasemen di atas belum menggunakan tie break. \
             Versi lebih akurat cek: http://challonge.com/badrleague'
-        bot.sendMessage(chat_id, msg)
+        bot.sendMessage(chat_id, reply)
     elif msg['text'] == '/start' or msg['text'] == '/help':
         reply = "BADR(o)BOT v0.2\n"
         reply += "Command yg tersedia:\n"
