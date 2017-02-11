@@ -5,7 +5,7 @@ import telepot
 from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton, ForceReply
 import json
 import herokudb
-#import replyhandler
+import replyhandler
 
 BOT_KEY = os.environ['BADR_BOT_KEY']
 CHALLONGE_KEY = os.environ['BADR_CHALLONGE_KEY']
@@ -31,7 +31,7 @@ def on_chat_message(msg):
 
     # keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
     # bot.sendMessage(chat_id, 'Pilih peserta', reply_markup=keyboard)
-    if msg['text'] == '/klasemen':
+    if msg['text'].strip() == '/klasemen':
         reply = 'KLASEMEN LIGA BADR 2017\n'
         reply += '=======================\n'
         players = herokudb.getStandings()
@@ -46,7 +46,7 @@ def on_chat_message(msg):
         reply += 'Klasemen di atas belum menggunakan tie break. \
             Versi lebih akurat cek: http://challonge.com/badrleague'
         bot.sendMessage(chat_id, reply)
-    elif msg['text'] == '/start' or msg['text'] == '/help':
+    elif msg['text'].strip() == '/start' or msg['text'].strip() == '/help':
         reply = "BADR(o)BOT v0.2\n"
         reply += "Command yg tersedia:\n"
         reply += "/klasemen - melihat klasemen saat ini\n\n"
@@ -55,19 +55,21 @@ def on_chat_message(msg):
         reply += "/skor - melihat histori hasil pertandingan player\n"
         reply += "/teamhistory - melihat histori tim yg digunakan player\n"
         bot.sendMessage(chat_id, reply)
-    elif msg['text'] == '/updateskor':
+    elif msg['text'].strip() == '/updateskor':
         reply = 'Command ini khusus Admin! Situ siapa? :p'
         force = None
         if msg['from']['id'] == ADMIN_ID:
             reply = 'Update skor dgn membalas chat ini:\n'
-            reply += 'player1 tim1 skor1 - player2 tim2 skor 2\n'
+            reply += 'player1 tim1 skor1 player2 tim2 skor2\n'
             reply += 'Contoh:\n'
-            reply += 'yahya juve 2 - amri chelsea 1'
+            reply += 'yahya juve 2 amri chelsea 1'
             force = ForceReply(force_reply=True, selective=True)
 
         bot.sendMessage(chat_id, reply, reply_to_message_id=msg['message_id'], reply_markup=force)
+    elif 'reply_to_message' in msg:#it's a reply
+        reply = replyhandler.handle(msg)
+        bot.sendMessage(chat_id, "On progress!")
     else:
-        #if ''
         bot.sendMessage(chat_id, "On progress!")
 
 def on_callback_query(msg):

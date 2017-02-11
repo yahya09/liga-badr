@@ -1,8 +1,7 @@
 import os
 import psycopg2
 
-#DB_URI = os.environ['BADR_PGSQL']
-DB_URI = 'postgres://postgres:brokoli@localhost:5432/badr_league'
+DB_URI = os.environ['BADR_PGSQL']
 # Connect to an existing database
 conn = psycopg2.connect(DB_URI)
 
@@ -42,7 +41,7 @@ def updateScore(players):
     query = "SELECT * FROM match_records WHERE (player1_id=%s AND player2_id=%s) OR (player1_id=%s AND player2_id=%s);"
     cursor.execute(query, (player1[0], player2[0], player2[0], player1[0]))
     match = cursor.fetchone()
-    print(match)
+    print("updateScore, match record:", match)
     #update team history
     updateTeamHistory(players,
                       {'match_id':match[0], 'player1_id':player1[0], 'player2_id':player2[0]})
