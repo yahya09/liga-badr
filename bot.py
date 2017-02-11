@@ -87,7 +87,8 @@ def on_callback_query(msg):
         teams = herokudb.getTeamHistory(name)
         reply = "Team history for {}:\n".format(name.upper())
         for key, team in enumerate(teams):
-            reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4])
+            #reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4])
+            reply += "{}. {}".format(key+1, team)
 
     #send result to existing message
     bot.editMessageText(msg_id, reply)
