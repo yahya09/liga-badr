@@ -85,7 +85,7 @@ def on_callback_query(msg):
     if 'history' in query_data:
         name = query_data.split('-')[1]
         teams = herokudb.getTeamHistory(name)
-        reply = "Team history for %s:\n" % name.upper()
+        reply = "Team history for {}:\n".format(name.upper())
         for key, team in enumerate(teams):
             reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4])
 
