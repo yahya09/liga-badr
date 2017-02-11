@@ -19,7 +19,7 @@ Players list
 """
 def getPlayerList():
     cursor = conn.cursor()
-    cursor.execute("SELECT id, name FROM player_result ORDER BY id;")
+    cursor.execute("SELECT id, name FROM player_result ORDER BY name;")
     players = cursor.fetchall()
     return players
 
@@ -37,6 +37,8 @@ def updateScore(players):
     player1 = cursor.fetchone()
     cursor.execute("SELECT * FROM player_result WHERE LOWER(name)='{}';".format(players[1][0].lower()))
     player2 = cursor.fetchone()
+    if player1 is None or player2 is None:
+        return "Ada typo di nama nih! gak ketemu di DB :("
     #get match row
     query = "SELECT * FROM match_records WHERE (player1_id=%s AND player2_id=%s) OR (player1_id=%s AND player2_id=%s);"
     cursor.execute(query, (player1[0], player2[0], player2[0], player1[0]))
@@ -164,3 +166,14 @@ def updateTeamHistory(players, match_data):
     conn.commit()
     print([player1_result, player2_result])
     return True
+
+def getTeamHistory(name):
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM player_result WHERE LOWER(name)='{}';".format(name))
+    player = cursor.fetchone()
+    if player is None:
+        return "Nama player tidak dikenal!"
+
+    cursor.execute("SELECT * FROM player_team_history WHERE player_id=%s;", (player[0],))
+    teams = cursor.fetchall()
+    return teams
