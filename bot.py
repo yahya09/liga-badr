@@ -83,12 +83,13 @@ def on_callback_query(msg):
     bot.answerCallbackQuery(query_id, text='Sip, oke!')
     reply = "Maaf, ada kesalahan :("
     if 'history' in query_data:
-        name = query_data.split('-')[1]
-        teams = herokudb.getTeamHistory(name)
+        pid = int(query_data.split('-')[1])
+        name, teams = herokudb.getTeamHistory(pid)
         reply = "Team history for {}:\n".format(name.upper())
         for key, team in enumerate(teams):
-            #reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4])
-            reply += "{}. {}".format(key+1, team)
+            reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4][0].upper())
+        if len(teams) == 0:
+            reply += "(Belum ada)"
 
     #send result to existing message
     bot.editMessageText(msg_id, reply)

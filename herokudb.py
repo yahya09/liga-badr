@@ -167,13 +167,10 @@ def updateTeamHistory(players, match_data):
     print([player1_result, player2_result])
     return True
 
-def getTeamHistory(name):
+def getTeamHistory(player_id):
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM player_result WHERE LOWER(name)='{}';".format(name))
-    player = cursor.fetchone()
-    if player is None:
-        return "Nama player tidak dikenal!"
-
-    cursor.execute("SELECT * FROM player_team_history WHERE player_id=%s;", (player[0],))
+    cursor.execute("SELECT * FROM player_team_history WHERE player_id=%s;", (player_id,))
     teams = cursor.fetchall()
-    return teams
+    cursor.execute("SELECT name FROM player_result WHERE id=%s;", (player_id,))
+    player = cursor.fetchone()
+    return player[0], teams
