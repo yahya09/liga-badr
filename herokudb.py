@@ -60,9 +60,10 @@ def updateStandings(players, match_record):
     cursor = conn.cursor()
     print('standing before:', players)
     #who wins? update w-d-l count, and total points
-    player1 = {'win': players[0][2], 'draw': players[0][3], 'lose': players[0][4],
+    #NOTE: in heroku db, it's win-lose-draw sequence
+    player1 = {'win': players[0][2], 'draw': players[0][4], 'lose': players[0][3],
                'goals': players[0][5], 'conceded': players[0][6], 'points': players[0][7]}
-    player2 = {'win': players[1][2], 'draw': players[1][3], 'lose': players[1][4],
+    player2 = {'win': players[1][2], 'draw': players[1][4], 'lose': players[1][3],
                'goals': players[1][5], 'conceded': players[1][6], 'points': players[1][7]}
     if match_record[5] == players[0][0]:    #first player win
         player1['win'] += 1
