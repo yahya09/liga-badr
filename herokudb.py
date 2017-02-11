@@ -1,5 +1,6 @@
 import os
 import psycopg2
+import challonge
 
 DB_URI = os.environ['BADR_PGSQL']
 # Connect to an existing database
@@ -51,6 +52,8 @@ def updateScore(players):
     updated_match = updateRecord([player1, player2], [players[0][2], players[1][2]], match)
     #update standings
     updateStandings([player1, player2], updated_match)
+    #update to challonge also
+    challonge.updateMatchRecord(updated_match)
 
     return "Success!"
 
