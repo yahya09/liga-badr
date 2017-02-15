@@ -177,3 +177,28 @@ def getTeamHistory(player_id):
     cursor.execute("SELECT name FROM player_result WHERE id=%s;", (player_id,))
     player = cursor.fetchone()
     return player[0], teams
+
+def getMatchHistory(player_id):
+    cursor = conn.cursor()
+    query1 = ("SELECT M.player1_id, P.name as player1_name, M.player1_goals, "
+              "M.player2_id, PT.name as player2_name, M.player2_goals, M.winner, M.status "
+              "FROM match_records M "
+              "JOIN player_result P ON M.player1_id = P.id "
+              "JOIN player_result PT ON M.player2_id = PT.id "
+              "WHERE M.player1_id = %s ORDER BY M.status, M.id;")
+    #if away
+    query2 = ("SELECT M.player2_id as player1_id, PT.name as player1_name, M.player2_goals as player1_goals, "
+              "M.player1_id as player2_id, P.name as player2_name, M.player1_goals as player2_goals, M.winner, M.status "
+              "FROM match_records M "
+              "JOIN player_result P ON M.player1_id = P.id "
+              "JOIN player_result PT ON M.player2_id = PT.id "
+              "WHERE M.player2_id = %s ORDER BY M.status, M.id;")
+
+    cursor.execute(query1, (player_id,))
+    record1 = cursor.fetchall()
+    cursor.execute(query2, (player_id,))
+    records = record1 + cursor.fetchall()
+
+    cursor.execute("SELECT name FROM player_result WHERE id=%s;", (player_id,))
+    player = cursor.fetchone()
+    return player[0], sorted(records, key=lambda record: record[7])

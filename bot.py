@@ -6,6 +6,7 @@ from telepot.namedtuple import InlineKeyboardMarkup, InlineKeyboardButton, Force
 import json
 import herokudb
 import replyhandler
+import helper
 
 BOT_KEY = os.environ['BADR_BOT_KEY']
 CHALLONGE_KEY = os.environ['BADR_CHALLONGE_KEY']
@@ -72,6 +73,12 @@ def on_chat_message(msg):
 
         keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
         bot.sendMessage(chat_id, reply, reply_markup=keyboard)
+    elif msg['text'].strip() == '/matchinfo':
+        reply = 'Pilih player:'
+        players = herokudb.getPlayerList()
+        buttons = helper.buildPlayerListButtons('match')
+        keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)
+        bot.sendMessage(chat_id, reply, reply_markup=keyboard)
     else:
         bot.sendMessage(chat_id, "On progress!")
 
@@ -90,6 +97,17 @@ def on_callback_query(msg):
             reply += "{}. {} ({})\n".format(key+1, team[3].lower().title(), team[4][0].upper())
         if len(teams) == 0:
             reply += "(Belum ada)"
+    elif 'match' in query_data:
+        pid = int(query_data.split('-')[1])
+        name, results = herokudb.getMatchHistory(pid)
+        reply = "Match history for {}:\n".format(name.upper())
+        for record in results:
+            if record[7] == 'complete':
+                reply += "vs. {}: {}-{}\n".format(record[4], record[2], record[5])
+            else:
+                reply += "vs. {}: \n".format(record[4])
+        if len(results) == 0:
+            reply += "(Belum ada)"
 
     #send result to existing message
     bot.editMessageText(msg_id, reply)
@@ -102,3 +120,4 @@ print('Listening ...')
 
 while 1:
     time.sleep(10)
+    
