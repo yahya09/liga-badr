@@ -36,12 +36,12 @@ def on_chat_message(msg):
     elif msg['text'].strip() == '/start' or msg['text'].strip() == '/help':
         reply = "BADR(o)BOT v0.2.3\n"
         reply += "Command yg tersedia:\n"
+        reply += "/matchinfo - melihat hasil/jadwal tanding player\n"
         reply += "/klasemen - melihat klasemen saat ini\n"
         reply += "/teamhistory - melihat histori tim yg digunakan player\n"
         reply += "/updateskor - khusus admin (@yahyaman)\n\n"
         reply += "Coming soon:\n"
-        reply += "/jadwal - melihat jadwal player\n"
-        reply += "/skor - melihat histori hasil pertandingan player\n"
+        reply += "(belum ada - silakan request)"
         bot.sendMessage(chat_id, reply)
     elif msg['text'].strip() == '/updateskor':
         reply = 'Command ini khusus Admin! Situ siapa? :p'
@@ -120,4 +120,3 @@ print('Listening ...')
 
 while 1:
     time.sleep(10)
-    
