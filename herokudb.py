@@ -134,7 +134,7 @@ def updateRecord(players, score, match_record):
         return "Wrong match record"
 
     #determine winner, null if draw
-    winner = 'NULL'
+    winner = None
     if score[0] > score[1]:
         winner = players[0][0]
     elif score[0] < score[1]:
